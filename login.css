@@ -1,0 +1,208 @@
+body {
+  font-family: "Poppins", sans-serif;
+  height: 100vh;
+  background-color: #000080;
+  margin: 0;
+}
+
+a {
+  color: #92badd;
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 400;
+}
+#formContent {
+  border-radius: 10px;
+  background: #fff;
+  padding: 30px;
+  width: 90%;
+  max-width: 450px;
+  position: relative;
+  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+  text-align: center;
+  overflow-y: auto; /* Add this property to enable vertical scrollbar if content overflows */
+  max-height: 80vh; /* Add this property to set the maximum height of the form */
+}
+
+h2 {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+  margin: 40px 8px 10px 8px;
+  color: #cccccc;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  min-height: 100%;
+  padding: 20px;
+}
+
+#formContent {
+  border-radius: 10px;
+  background: #fff;
+  padding: 30px;
+  width: 90%;
+  max-width: 450px;
+  position: relative;
+  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+  text-align: center;
+  overflow-y: auto;  
+  max-height: 90vh;
+}
+#formContent::-webkit-scrollbar {
+    width: 6px; /* Adjust the width of the scrollbar */
+  }
+  /* Track styles */
+#formContent::-webkit-scrollbar-track {
+    background: transparent; /* Set the background color of the track */
+  }
+  
+  /* Thumb (actual scrollbar) styles */
+#formContent::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3); /* Set the color of the scrollbar thumb */
+    border-radius: 3px; /* Set the border radius of the scrollbar thumb */
+  }
+
+#formFooter {
+  background-color: #f6f6f6;
+  border-top: 1px solid #dce8f1;
+  padding: 25px;
+  text-align: center;
+  border-radius: 0 0 10px 10px;
+}
+
+h2.inactive {
+  color: #cccccc;
+}
+
+h2.active {
+  color: #0d0d0d;
+  border-bottom: 2px solid #5fbae9;
+}
+
+input[type=button], input[type=submit], select[name="credential"],select[name="course_id"] {
+  background-color: #000080;
+  border: none;
+  color: white;
+  padding: 15px 80px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: bold;
+  border-radius: 5px;
+  margin: 5px 20px 40px 20px;
+  box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
+  transition: all 0.3s ease-in-out;
+}
+
+input[type=button]:hover, input[type=submit]:hover, select[name="credential"]:hover,select[name="course_id"]:hover {
+  background-color: #000080;
+}
+
+input[type=button]:active, input[type=submit]:active, select[name="credential"]:active,select[name="course_id"]:active {
+  transform: scale(0.95);
+}
+
+input[type=text],input[type=password],select[name="credential"],select[name="course_id"] {
+  background-color: #f6f6f6;
+  border: none;
+  color: #0d0d0d;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 5px;
+  width: 85%;
+  border: 2px solid #f6f6f6;
+  transition: all 0.5s ease-in-out;
+  border-radius: 5px;
+}
+
+input[type=text]:focus,input[type=password]:focus, select[name="credential"]:focus,select[name="course_id"]:focus {
+  background-color: #fff;
+  border-bottom: 2px solid #000080;
+}
+
+input[type=text]::placeholder,input[type=password]::placeholder, select[name="credential"]::placeholder,select[name="course_id"]::placeholder{
+  color: #cccccc;
+}
+
+.underlineHover:after {
+  display: block;
+  left: 0;
+  bottom: -10px;
+  width: 0;
+  height: 2px;
+  background-color: #000080;
+  content: "";
+  transition: width 0.2s;
+}
+
+.underlineHover:hover {
+  color: #0d0d0d;
+}
+
+.underlineHover:hover:after {
+  width: 100%;
+}
+
+*:focus {
+  outline: none;
+}
+
+#icon {
+    width: 90px; /* Set the desired width of the circular logo */
+    height: 90px; /* Set the desired height of the circular logo */
+    border-radius:20%; /* Create a circular shape by setting border-radius to 50% */
+    border: 1px solid #000080; /* Add a border to the circular logo */
+    display: block; /* Ensure the logo is a block-level element */
+    margin: 0 auto 20px; /* Center the logo horizontally and add spacing at the bottom */
+  }
+  
+* {
+  box-sizing: border-box;
+}
+@media (max-width: 575.98px) {
+  h2 {
+    font-size: 18px;
+  }
+  input[type=button], input[type=submit], input[type=reset],select[name="credential"],select[name="course_id"] {
+    padding: 12px 40px;
+    font-size: 12px;
+  }
+  input[type=text], input[type=password],select[name="credential"],select[name="course_id"] {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}
+
+/* Medium devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+  h2 {
+    font-size: 20px;
+  }
+  input[type=button], input[type=submit], select[name="credential"] ,select[name="course_id"]{
+    padding: 12px 60px;
+    font-size: 14px;
+  }
+  input[type=text], input[type=password],select[name="credential"],select[name="course_id"] {
+    padding: 12px 28px;
+    font-size: 16px;
+  }
+}
+.error-msg {
+    color: #ff0000;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+  }

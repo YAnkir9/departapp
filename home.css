@@ -1,0 +1,60 @@
+
+
+/* Style the row to display columns side by side */
+.row {
+    display: flex;
+    justify-content: space-between; /* Distribute columns equally */
+    flex-wrap: wrap; /* Allow columns to wrap to the next row on small screens */
+}
+
+/* Style the individual column (col) */
+.col {
+    flex: 1; /* Allow columns to take equal width */
+    justify-content: space-between; /* Distribute columns equally *
+    margin-right: 10px; /* Add spacing between columns (adjust as needed) */
+    margin-bottom: 10px; /* Add spacing between rows (adjust as needed) */
+}
+
+/* Card styling */
+.card {
+    flex: none;
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    height:110px;
+
+    padding: 10px;
+    text-align: justify;
+    border-radius: 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    align-content: stretch;
+    justify-content: space-around;
+}
+.card h1 a{
+    font-size: 24px; /* Heading font size */
+    margin-bottom: 10px; /* Spacing below the heading */
+}
+
+/* Button styling */
+.btn {
+    display: inline-block; /* Make the button inline */
+    color: #0056b3; /* Button text color */
+    text-decoration: none; /* Remove underlines from links */
+    border: none; /* Remove button borders */
+    border-radius: 5px; /* Rounded corners for buttons */
+    cursor: pointer; /* Add pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth background color transition on hover */
+    align-self: flex-end; /* Align the button to the right side of the card */
+    margin-top: auto; /* Push the button to the bottom of the card */
+    padding: 10px 20px; /* Add padding to the button */
+
+}
+
+.btn:hover {
+    color: rgb(235, 139, 50);
+    background-color: #007bff; /* Change button background color on hover */
+}

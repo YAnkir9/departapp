@@ -1,0 +1,122 @@
+
+/* Form container */
+.form-container {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form input fields */
+.form-control {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Dropdown container */
+.custom-dropdown {
+    position: relative;
+}
+
+/* Dropdown input */
+.custom-dropdown input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+/* Dropdown content (checkboxes) */
+.dropdown-content {
+    display: flex;
+    /* position: unset; */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: space-around;
+    align-items: baseline;}
+
+/* Label for the checkboxes */
+.checkbox-label {
+    display: inline;
+    padding: 10px;
+    cursor: pointer;}
+
+/* Checked checkbox */
+.form-check-input:checked + .checkbox-label {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Style the submit button */
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    /* Adjust the form container width for smaller screens */
+    .form-container {
+        max-width: 100%;
+    }
+
+    /* Center the dropdown input on smaller screens */
+    .custom-dropdown input {
+        margin-top: 10px;
+    }
+}
+
+/* Custom styles for the select element */
+select {
+    /* Define the width and padding */
+    width: 100%;
+    padding: 0.5rem;
+    /* Add a border and remove the default styles */
+    border: 1px solid #ccc;
+    background-color: #fff;
+    /* Customize the appearance of the dropdown arrow */
+    background-image: url("path-to-your-arrow-image.png"); /* Replace with your arrow image */
+    background-repeat: no-repeat;
+    background-position: right center;
+    /* Style the font and text color */
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+    /* Customize the appearance when the dropdown is open */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    /* Add hover and focus styles */
+    &:hover, &:focus {
+        border-color: #007bff; /* Change the border color on hover/focus */
+    }
+}
+
+/* Style the options within the dropdown */
+select option {
+    /* Define background and text colors */
+    background-color: #fff;
+    color: #333;
+    /* Add hover and focus styles */
+    &:hover, &:focus {
+        background-color: #007bff; /* Change the background color on hover/focus */
+        color: #fff; /* Change the text color on hover/focus */
+    }
+}

@@ -1,0 +1,53 @@
+/* Content container */
+.content-container {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+/* Subject container */
+.subject-container {
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.subject-name {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Exam container */
+.exam-container {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+
+.exam-name {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 18px;
+    margin-left: 5px;
+}
+
+.check-icon {
+    color: green;
+    margin-right: 5px;
+    font-size: 18px;
+}
+
+/* Media query for responsiveness */
+@media (max-width: 768px) {
+    .subject-container {
+        margin: 10px 0;
+    }
+}

@@ -1,0 +1,150 @@
+    /* Styles for the container */
+    .upload-container {
+        max-width: 500px; /* Adjust the maximum width as needed */
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    /* Heading style */
+    .upload-container h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    /* Error message style */
+    .error-msg {
+        background-color: #fdd;
+        border: 1px solid #f00;
+        color: #f00;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+
+    /* Success message style */
+    .success-msg {
+        background-color: #dfd;
+        border: 1px solid #080;
+        color: #080;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+
+    /* Label style */
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    /* Input and select style */
+    input[type="text"],
+    input[type="datetime-local"],
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #333;
+    }
+
+    /* File input style */
+    input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #333;
+    }
+
+    /* Button style */
+    button[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+/* Style for select elements */
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+    background-color: #fff; /* Background color for the dropdown */
+}
+
+/* Style for the dropdown arrow */
+select::-ms-expand {
+    display: none; /* Remove the default arrow in IE/Edge */
+}
+
+/* Style for the dropdown when it's focused */
+select:focus {
+    border-color: #007bff; /* Highlight border color on focus */
+    outline: none;
+}
+
+/* Style for the dropdown options */
+select option {
+    padding: 10px;
+    font-size: 16px;
+    color: #333;
+    background-color: #fff; /* Background color for each option */
+}
+
+/* Style for the dropdown when hovering over options */
+select option:hover {
+    background-color: #f0f0f0; /* Background color on hover */
+}
+
+/* Style for the dropdown arrow icon (using FontAwesome for arrow) */
+select::after {
+    content: "\f078"; /* FontAwesome down-arrow icon */
+    font-family: FontAwesome;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none; /* Prevent icon from being clickable */
+}
+
+/* Style for the dropdown arrow icon when hovering over select */
+select:hover::after {
+    color: #007bff; /* Arrow color on hover */
+}
+
+    button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    /* Responsive styles */
+    @media screen and (max-width: 600px) {
+        .upload-container {
+            max-width: 100%;
+        }
+
+        /* Adjust the styles for smaller screens */
+        input[type="text"],
+        input[type="datetime-local"],
+        select,
+        input[type="file"] {
+            width: 100%;
+        }
+    }

@@ -1,0 +1,76 @@
+/* Style the row to display columns side by side */
+.row {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.row.header{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+.tab-button {
+    color: #000000;
+    border: none;
+    border-radius: 5px;
+}
+
+.tab-button.active {
+    background-color: #0056b3;
+}
+        /* Custom tab content styles */
+        .tab-content {
+            background-color: #f7f7f7;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 25px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 25px 0;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Style the tables if needed */
+        .table {
+            width: 100%;
+        }
+        
+        
+        .col {
+            text-align: center; /* Center-align the buttons */
+        }
+        
+        /* Style the tables */
+.table {
+    width: 100%;
+    border-collapse: collapse; /* Remove spacing between table cells */
+    margin-bottom: 20px; /* Add some spacing below the table */
+
+}
+
+/* Style table headers */
+.table th {
+    background-color: #0056b3; /* Header background color */
+    color: white; /* Header text color */
+    padding: 10px; /* Header cell padding */
+    text-align: center; /* Center-align header text */
+}
+
+/* Style table data cells */
+.table td {
+    border: 1px solid #ddd; /* Add borders to data cells */
+    padding: 8px; /* Data cell padding */
+    text-align: center; /* Center-align data text */
+}
+
+/* Add hover effect to table rows */
+.table tbody tr:hover {
+    background-color: #f0f0f0; /* Row background color on hover */
+}

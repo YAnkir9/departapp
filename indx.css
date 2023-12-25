@@ -1,0 +1,304 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #eef5fe; 
+}
+
+/* Top Navigation Bar Styles */
+header {
+    background-color: #fff; 
+    padding: 0px;
+    line-height: 1px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.head,.logo {
+    position: relative;
+    font-size: 30px;
+    color: #333;
+    font-weight: 500;
+    font-family: ui-sans-serif;
+    padding-left: 36px;
+    padding:0px 2;
+    padding-top: 0px;
+    
+}
+
+.top-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Display top navigation items as a flex container */
+}
+
+.top-nav li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.top-nav li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+
+/* Left Side Sliding Navigation Bar Styles */
+#sidebar {
+    position: fixed;
+    left: -250px;
+    top: 0;
+    height: 100%;
+    width: 250px;
+    background-color: #fff; /* Background color from reference CSS */
+    color: #333; /* Text color from reference CSS */
+    transition: left 0.3s ease;
+    overflow-y: hidden; /* Hide scrollbar initially */
+}
+
+#sidebar.open {
+    left: 0;
+}
+
+.sidebar-nav {
+    list-style-type: none;
+    padding: 20px;
+}
+
+.sidebar-nav li {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-nav li a {
+    color: #333; /* Text color from reference CSS */
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+/* Hover effect for sidebar items */
+.sidebar-nav li a:hover {
+    color: #fa0000; /* Background color on hover from reference CSS */
+}
+
+/* CSS for Icons and Labels */
+.sidebar-nav li a i {
+    font-size: 20px; /* Adjust the icon size */
+    margin-right: 10px; /* Add spacing between icon and label */
+}
+
+.sidebar-nav li a span {
+    font-size: 16px; /* Adjust the label font size */
+}
+
+.container {
+    margin-top: 20px;
+    border-radius: 10px;
+    background-color: #fcfcfc;
+    padding: 25px 0px;
+}
+
+/* Content Area on the Right Side */
+#content {
+    margin-left: 0; /* Initially, content is not shifted */
+    padding: 20px;
+}
+
+/* Toggle button styles */
+.toggle-button {
+    background-color: #fff; /* Background color from reference CSS */
+    color: #b9c1d8; /* Text color from reference CSS */
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 10px;
+    position: absolute;
+    top: 0px;
+    left: 10px;
+    z-index: 0;
+}
+
+/* Toggle button styles on hover */
+.toggle-button:hover {
+    background-color: #f8f8f8; /* Background color on hover from reference CSS */
+    color: #fff; /* Text color on hover from reference CSS */
+}
+
+/* Close button styles */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 2;
+}
+/* Close button styles on hover */
+.close-button:hover {
+    background-color: #000080; /* Background color on hover */
+    color: #fff; /* Text color on hover */
+}
+
+
+/* User Details Styles */
+/* User Details Styles */
+.user-details {
+    position: sticky;
+    top: 0;
+    z-index: 100; /* Ensure the user details stay above other content */
+    display: flex;
+    align-items: flex-end;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #9eacf8;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex-direction: row;
+    align-content: justify;
+    justify-content: space-around;
+}
+
+.user-details-column {
+    flex: none;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    /* color: #000000; */
+}
+
+.user-details-container {
+    flex: 1;
+}
+.form-label {
+    font-weight: bold;
+    color: #000000; /* Text color matches navigation text color */
+}
+
+.user-name {
+    font-size: 18px;
+    color: #000000; /* Text color matches navigation text color */
+}
+
+.user-link {
+    text-decoration: none;
+    color: #fff;
+    background-color: #333; /* Background color of the link */
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.user-link img {
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+}
+
+.user-link:hover {
+    background-color: #555; /* Background color on hover */
+}
+.main-top {
+    position:absolute;
+    /* top: 10px; */
+    right: 10px;
+    text-align: -webkit-right;
+    font-size: 24px;
+    color: #5965C5;
+}
+  
+/* Logo Styles */
+
+.logo_name {
+    
+    font-size: 30px;
+    color:333;
+    font-weight: 500;
+    font-family: ui-sans-serif;
+    padding-left: 36px;
+    
+}
+.nav_image img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid steelblue;
+    
+}
+/* Media query to hide the sidebar in desktop view */
+@media (min-width: 768px) {
+    #sidebar {
+        left: 0;
+        padding-top: 20px;
+    }
+    .sidebar-nav {
+        list-style-type: none;
+        padding: 0;
+    }
+    .toggle-button {
+        display: none; /* Hide the toggle button in desktop view */
+    }
+
+    /* Shift the content to the right to accommodate the sidebar */
+    #content {
+        margin-left: 250px;
+    }
+    
+    .close-button {
+        display: none; /* Show the close button on mobile view */
+    }
+}
+
+/* Add this media query for smaller screens */
+@media (max-width: 768px) {
+    #sidebar.open {
+        overflow-y: scroll; /* Show scrollbar when the sidebar is open */
+    }
+    header {
+        line-height: 25px;
+    }
+    .user-details {
+        flex-direction: column; /* Stack columns vertically on mobile */
+        text-align: justify; /* Center-align content on mobile */
+    }
+
+    .user-details-column {
+        width: 60%; 
+        margin:auto;
+        margin-bottom: 2%;
+    }
+    
+}
+
+
+/* Media query for landscape (horizontal) orientation on smaller screens */
+@media (max-width: 768px) and (orientation: landscape) {
+    /* Adjust styles for landscape orientation here */
+    header {
+        line-height: 25px;
+    }
+    .user-details {
+        flex-direction: column; /* Stack columns vertically on mobile */
+        text-align: justify; /* Center-align content on mobile */
+    }
+
+    .user-details-column {
+        width: 60%; 
+        margin: auto;
+        margin-bottom: 2%;
+    }
+}
