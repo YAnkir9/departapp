@@ -169,6 +169,14 @@ $user = $result->fetch_assoc();
                 </div>
             </div>
         </div>
+
+        <div class="col-md-12">
+            <div class="card custom-card">
+                <div class="card-body text-center">
+                    <a href="facultyExamList.php" class="card-link">Exam List</a>
+                </div>
+            </div>
+        </div>
     
         <div class="col-md-12">
             <div class="card custom-card">
@@ -177,8 +185,8 @@ $user = $result->fetch_assoc();
                 </div>
             </div>
         </div>
-    
-            <div class="col-md-12">
+
+        <div class="col-md-12">
             <div class="card custom-card">
                 <div class="card-body text-center">
                     <a href="faculty_result_select.php" class="card-link">Result</a>

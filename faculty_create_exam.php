@@ -67,14 +67,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subjectId = $_POST['subject'];
     $examName = $_POST['exam_name'];
     $examType = $_POST['exam_type'];
+    $total=$_POST['total'];
+    $interval=$_POST['timeInterval'];
     $currentDateTime = date('Y-m-d H:i:s');
+
     // Generate a unique Exam_id
     $examId = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
 
     // Insert the values into the exam table
-    $stmt = $conn->prepare("INSERT INTO exam (Exam_id, Exam_name, Exam_type, User_id, Course_id, Subject_id, Create_time) 
-    VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssiiiis", $examId, $examName, $examType, $_SESSION['User_id'], $courseId, $subjectId, $currentDateTime);
+    $stmt = $conn->prepare("INSERT INTO exam (Exam_id, Exam_name, Exam_type, User_id, Course_id, Subject_id, Create_time, total_marks, tInterval) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssiiiisii", $examId, $examName, $examType, $_SESSION['User_id'], $courseId, $subjectId, $currentDateTime,$total,$interval);
 
     if ($stmt->execute()) {
         // Exam inserted successfully
@@ -284,11 +287,20 @@ if (isset($_GET['success'])) {
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Select Topics:</label>
-                        <div class="topic-checkboxes">
-                            <!-- Checkboxes will be dynamically added using JavaScript -->
-                        </div>
+                        <label for="total" class="form-label">Total weightage:</label>
+                        <input type="text" name="total" id="total" class="form-control" required pattern="[0-9]+" title="Please enter a numeric value">
                     </div>
+                    <div class="mb-3">
+    <label for="timeInterval" class="form-label">Select Time Interval:</label>
+    <input type="radio" id="interval10" name="timeInterval" value="00:00:10">
+    <label for="interval10">10 seconds</label>
+
+    <input type="radio" id="interval30" name="timeInterval" value="00:00:30">
+    <label for="interval30">30 seconds</label>
+
+    <input type="radio" id="interval60" name="timeInterval" value="00:00:60">
+    <label for="interval60">60 seconds</label>
+</div>
                     <button type="submit" class="btn btn-primary">Create Exam</button>
                 </form>
             </div>
@@ -394,7 +406,7 @@ if (isset($_GET['success'])) {
                     topics.forEach(function (topic) {
                         dropdownContent.append(
                             `<label class="checkbox-label">
-                                <input class="form-check-input" type="checkbox" name="topics[]" value="${topic.topic_id}">
+                                <input class="form-check-input" type="checkbox" name="topics[]" value="${topic.topic_id}.${topic.topic_name}">
                                 ${topic.topic_name}
                             </label>`
                         );

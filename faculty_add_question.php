@@ -108,58 +108,6 @@ if ($_SESSION['credential'] == 'faculty' && $_SESSION['is_approved'] == 1) {
 }
 
 
-
-// Handle the form submission to add FIB questions
-if (isset($_POST['submit_FIB'])) {
-    if (isset($_POST['subject'])) {
-        $subjectId = $_POST['subject'];
-        $topicId = $_POST['topic'];
-        // Check if $_POST['test_question'] is set and is an array
-        if (isset($_POST['test_question']) && is_array($_POST['test_question'])) {
-            // Get the number of True/False questions submitted
-            $numQuestions = count($_POST['test_question']);
-
-            // Debugging: Check values of $subjectId and $topicId
-            echo "Subject ID (fib): " . $subjectId . "<br>";
-            echo "Topic ID (fib): " . $topicId . "<br>";
-
-            // Check if there are at least 2 options for each question (True and False)
-            if ($numQuestions < 1) {
-                echo "Please add at least one true/false question.";
-            } else {
-                // Assuming you have an established database connection ($conn)
-                $stmt = $conn->prepare("INSERT INTO test_content (tesy_question_type, test_question, 
-                test_correct_answer, test_que_weightage, test_sub_id, test_topic_id, create_time) VALUES (?, ?, ?, ?, ?, ?, NOW())");
-
-                $questionType = "Fill in the balnks"; // Fixed question type for True/False questions
-                for ($i = 0; $i < $numQuestions; $i++) {
-                    $question = $_POST['test_question'][$i];
-                    $correctAnswer = $_POST['fib_correct_answer'][$i];
-                    $weightage = $_POST['test_que_weightage'][$i];
-
-                    $stmt->bind_param("sssiii", $questionType, $question, $correctAnswer, $weightage, $subjectId, $topicId);
-                    $result = $stmt->execute();
-
-                    if (!$result) {
-                        echo "Error adding fib question: " . $conn->error;
-                        break; // Exit the loop if an error occurs
-                    }
-                }
-
-                $stmt->close();
-
-                if ($result) {
-                    echo "fib questions added successfully.";
-                }
-            }
-        } else {
-            echo "No fib questions submitted or data is not in the correct format.";
-        }
-    } else {
-        echo "Missing subject ID or True/False data.";
-    }
-}
-
         ?>
 
 <!DOCTYPE html>
@@ -172,120 +120,9 @@ if (isset($_POST['submit_FIB'])) {
     <link rel="stylesheet" href="indx.css">
     <!-- <link rel="stylesheet" href="home.css"> -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+<link rel="stylesheet" href="form_cont.css">
     <script src="close.js"></script>
-    <style>
- /* Container for MCQ section and True/False section */
-.mcq-form-container, .tf-form-container ,.FIB-form-container{
-    display: none;
-    background-color: #f8f9fa;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    margin-top: 20px;
-}
 
-/* Form field styles for both MCQ and True/False sections */
-.form-label,
-.form-control,
-.form-select {
-    font-size: 1rem;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #444;
-}
-
-.form-select,
-.form-input,
-.form-control,
-.form-textarea {
-    width: 80%;
-    padding: 5px;
-    margin: 5px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-/* Button styles for both MCQ and True/False sections */
-.btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-primary {
-    background-color: #007bff;
-    color: #fff;
-}
-
-.btn-success {
-    background-color: #28a745;
-    color: #fff;
-}
-
-/* MCQ and True/False item styles */
-.mcq-item,
-.tf-item ,.FIB-item{
-    border: 1px solid #ccc;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    background-color: #fff;
-}
-
-/* Media queries for responsiveness */
-@media (max-width: 768px) {
-    .form-select,
-    .form-input,
-    .form-textarea {
-        font-size: 14px;
-    }
-
-    .btn {
-        padding: 8px 16px;
-    }
-}
-
-@media (max-width: 576px) {
-    .form-select,
-    .form-input,
-    .form-textarea {
-        font-size: 12px;
-    }
-
-    .btn {
-        padding: 6px 12px;
-    }
-}
-
-/* Style for the "Add More Question" button */
-#add-more-mcq,
-#add-more-tf,#add-more-FIB {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-/* Style for the additional MCQ and True/False questions */
-.additional-mcq-questions,
-.additional-tf-questions {
-    margin-top: 20px;
-}
-
-    </style>
 </head>
 <body>
     <!-- Top navigation bar with toggle button (for mobile) -->
@@ -363,9 +200,9 @@ if (isset($_POST['submit_FIB'])) {
 
     </div>
     <div class="container">
-        <button class="tablink" onclick="openPage('MCQs', this, 'blue')" id="defaultOpen">MCQs</button>
-        <button class="tablink" onclick="openPage('T/F', this, 'blue')">TRUE/FALSE</button>
-        <button class="tablink" onclick="openPage('FIB', this, 'blue')">Blanks</button>
+        <!-- <button class="tablink" onclick="openPage('MCQs', this, 'blue')" id="defaultOpen">MCQs</button> -->
+        <!-- <button class="tablink" onclick="openPage('T/F', this, 'blue')">TRUE/FALSE</button>
+        <button class="tablink" onclick="openPage('FIB', this, 'blue')">Blanks</button> -->
         <div id="MCQs" class="tabcontent">
         <h2 class="mb-4">Add MCQs</h2>
         <form id="MCQ_Questions" action="import_mcq.php" method="POST" enctype="multipart/form-data">
@@ -412,14 +249,72 @@ if (isset($_POST['submit_FIB'])) {
             </select>
         </div>
 
-        
+        <style>
+#upload-mcq-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.image-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+input[type="file"] {
+    margin-bottom: 10px;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+h5 {
+    margin-bottom: 10px;
+}
+
+        </style>
 
 
         <div id="upload-mcq-form-container">
+
+            <div class="image-container">
+                <h5>File Must be in this formate</h5><br>
+                <img src="image/formate/mcqExcel.webp" alt="Your Image">
+            </div>
             <input type="file" name="mcqFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+        
             <button type="submit" name="submit_mcq_excel" class="btn btn-success">Submit Excel MCQs</button>   
         </div>
-        <hr>
+        <script>
+            var myElement = document.getElementById('myElementId');
+if (myElement !== null) {
+    myElement.value = 'New Value';
+}
+
+        </script><hr>
         <button type="button" id="show-mcq-form" class="btn btn-primary">Add MCQs</button>
         <div class="mcq-form-container">
 
@@ -474,6 +369,15 @@ if (isset($_POST['submit_FIB'])) {
         
     </form>
     <script>
+        $(document).ready(function () {
+    // Hide the MCQ form initially
+    $('.mcq-form-container').hide();
+
+    // Toggle the visibility of "show-mcq-form" button
+    $('#show-mcq-form').click(function () {
+        $('.mcq-form-container').toggle();
+    });
+});
         // JavaScript code to handle adding more MCQ questions
         document.addEventListener('DOMContentLoaded', function () {
             const mcqContainer = document.getElementById('mcq-container');
@@ -518,278 +422,8 @@ if (isset($_POST['submit_FIB'])) {
         });
     </script>
         </div>
-        <div id="T/F" class="tabcontent">
-    <h2 class="mb-4">Add True/False</h2>
-    <form id="T_F_Question" action="import_tf.php" method="POST" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="course" class="form-label">Course:</label>
-            <select name="course" id="course" required class="form-select">
-                <option value="">Select Course</option>
-                <?php foreach ($courses as $course): ?>
-                <?php
-                // Check if the session variable for the selected course is set
-                $selectedCourseId = isset($_SESSION['selected_course']) ? $_SESSION['selected_course'] : "";
-                ?>
-                <option value="<?php echo $course['Course_id']; ?>" <?php echo ($selectedCourseId == $course['Course_id']) ? 'selected' : ''; ?>><?php echo $course['Course_name']; ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label for="subject" class="form-label">Subject:</label>
-            <select name="subject" id="subject" required class="form-select">
-                <option value="">Select Subject</option>
-                <?php
-                // Check if the session variable for the selected subject is set
-                $selectedSubjectId = isset($_SESSION['selected_subject']) ? $_SESSION['selected_subject'] : "";
-                $selectedSubjectName = isset($_SESSION['selected_subject_name']) ? $_SESSION['selected_subject_name'] : "";
-                ?>
-                <option value="<?php echo $selectedSubjectId; ?>" selected><?php echo $selectedSubjectName; ?></option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label for="topic" class="form-label">Topic:</label>
-            <select name="topic" id="topic" required class="form-select">
-                <option value="">Select Topic</option>
-                <?php
-                // Check if the session variable for the selected topic is set
-                $selectedTopicId = isset($_SESSION['selected_topic']) ? $_SESSION['selected_topic'] : "";
-                $selectedTopicName = isset($_SESSION['selected_topic_name']) ? $_SESSION['selected_topic_name'] : "";
-                ?>
-                <!-- Populate the topics dynamically based on your data -->
-                <?php foreach ($topics as $topic): ?>
-                <option value="<?php echo $topic['topic_id']; ?>" <?php echo ($selectedTopicId == $topic['topic_id']) ? 'selected' : ''; ?>><?php echo $topic['topic_name']; ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-        <div id="upload-mcq-form-container">
-            <input type="file" name="mcqFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-            <button type="submit" name="submit_tf_excel" class="btn btn-success">Submit Excel MCQs</button>   
-        </div>
-        <button type="button" id="show-tf-form" class="btn btn-primary">Add True/False</button>
-        
-        <hr>
-        <div class="tf-form-container">
-            <h3>Add True/False</h3>
-            <div id="tf-container">
-                <div class="tf-item">
-                    <div class="form-group">
-                        <label for="test_question">Question:</label>
-                        <input type="text" id="test_question" name="test_question[]" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="test_que_weightage">Weightage:</label>
-                        <input type="number" id="test_que_weightage" name="test_que_weightage[]" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="test_correct_answer" class="form-label">Correct Answer:</label>
-                        <select name="test_correct_answer[]" id="test_correct_answer" required class="form-select">
-                            <option value="">Select Correct Answer</option>
-                            <option value="True">True</option>
-                            <option value="False">False</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <!-- This is where dynamically added True/False questions will be appended -->
-            <div id="additional-tf-questions"></div>
-
-            <button type="button" id="add-more-tf" class="btn btn-primary">Add More Question</button>
-
-        </div>
-
-        <button type="submit" name="submit_tf_manual" id="submit_tf" class="btn btn-success">Submit</button>
-    </form>
+      
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-    const tfContainer = document.getElementById('tf-container');
-    const addMoreTfButton = document.getElementById('add-more-tf');
-    const additionalTfQuestions = document.getElementById('additional-tf-questions');
-
-    let questionIndex = 1; // To track the number of added questions
-
-    addMoreTfButton.addEventListener('click', function () {
-        questionIndex++;
-
-        // Clone the True/False question template
-        const template = document.querySelector('.tf-item');
-        const newTfItem = template.cloneNode(true);
-
-        // Update input field IDs and names to ensure uniqueness
-        newTfItem.querySelectorAll('input, select').forEach(function (element) {
-            const oldId = element.id;
-            const oldName = element.name;
-
-            element.id = oldId + questionIndex;
-            element.name = oldName.replace('[0]', '[' + questionIndex + ']'); // Update to match the questionIndex
-
-            element.value = ''; // Clear the values for new questions
-
-            // Update the 'for' attribute in associated labels
-            const associatedLabel = document.querySelector(`label[for="${oldId}"]`);
-            if (associatedLabel) {
-                associatedLabel.setAttribute('for', element.id);
-            }
-        });
-
-        // Append the new True/False question item
-        additionalTfQuestions.appendChild(newTfItem);
-    });
-});
-
-    </script>
-        </div>
-        <div id="FIB" class="tabcontent">
-<form id="FIB_Question" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-<h2 class="mb-4">Add Fill in the Blanks</h2>
-       
-<div class="mb-3">
-            <label for="course" class="form-label">Course:</label>
-            <select name="course" id="course" required class="form-select">
-                <option value="">Select Course</option>
-                <?php foreach ($courses as $course): ?>
-                <?php
-                // Check if the session variable for the selected course is set
-                $selectedCourseId = isset($_SESSION['selected_course']) ? $_SESSION['selected_course'] : "";
-                ?>
-                <option value="<?php echo $course['Course_id']; ?>" <?php echo ($selectedCourseId == $course['Course_id']) ? 'selected' : ''; ?>><?php echo $course['Course_name']; ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label for="subject" class="form-label">Subject:</label>
-            <select name="subject" id="subject" required class="form-select">
-                <option value="">Select Subject</option>
-                <?php
-                // Check if the session variable for the selected subject is set
-                $selectedSubjectId = isset($_SESSION['selected_subject']) ? $_SESSION['selected_subject'] : "";
-                $selectedSubjectName = isset($_SESSION['selected_subject_name']) ? $_SESSION['selected_subject_name'] : "";
-                ?>
-                <option value="<?php echo $selectedSubjectId; ?>" selected><?php echo $selectedSubjectName; ?></option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label for="topic" class="form-label">Topic:</label>
-            <select name="topic" id="topic" required class="form-select">
-                <option value="">Select Topic</option>
-                <?php
-                // Check if the session variable for the selected topic is set
-                $selectedTopicId = isset($_SESSION['selected_topic']) ? $_SESSION['selected_topic'] : "";
-                $selectedTopicName = isset($_SESSION['selected_topic_name']) ? $_SESSION['selected_topic_name'] : "";
-                ?>
-                <!-- Populate the topics dynamically based on your data -->
-                <?php foreach ($topics as $topic): ?>
-                <option value="<?php echo $topic['topic_id']; ?>" <?php echo ($selectedTopicId == $topic['topic_id']) ? 'selected' : ''; ?>><?php echo $topic['topic_name']; ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-
-        <button type="button" id="show-FIB-form" class="btn btn-primary">Add True/False</button>
-        
-        <hr>
-        <div class="FIB-form-container">
-            <h3>Add Fill In The Blanks</h3>
-            <div id="FIB-container">
-                <div class="FIB-item">
-                    <div class="form-group">
-                        <label for="test_question">Question:</label>
-                        <input type="text" id="test_question" name="test_question[]" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="test_que_weightage">Weightage:</label>
-                        <input type="number" id="test_que_weightage" name="test_que_weightage[]" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="fib_correct_answer" class="form-label">Correct Answer:</label>
-                        <input type="text" id="fib_correct_answer" name="fib_correct_answer[]" class="form-control" required>
-               
-                    </div>
-                </div>
-            </div>
-            <!-- This is where dynamically added True/False questions will be appended -->
-            <div id="additional-FIB-questions"></div>
-
-            <button type="button" id="add-more-FIB" class="btn btn-primary">Add More Question</button>
-
-        </div>
-
-        <button type="submit" name="submit_FIB" id="submit_FIB" class="btn btn-success">Submit</button>
-    </form>
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const fibContainer = document.getElementById('FIB-container');
-        const addMoreFibButton = document.getElementById('add-more-FIB');
-        const additionalFibQuestions = document.getElementById('additional-FIB-questions');
-        const fibForm = document.getElementById('FIB_Question');
-
-        let questionIndex = 1; // To track the number of added questions
-
-        addMoreFibButton.addEventListener('click', function () {
-            questionIndex++;
-
-            // Clone the Fill in the Blanks question template
-            const template = document.querySelector('.FIB-item');
-            const newFibItem = template.cloneNode(true);
-
-            // Update input field IDs and names to ensure uniqueness
-            newFibItem.querySelectorAll('input').forEach(function (element) {
-                const oldId = element.id;
-                const oldName = element.name;
-
-                element.id = oldId + questionIndex;
-                element.name = oldName.replace('[0]', '[' + questionIndex + ']'); // Update to match the questionIndex
-
-                element.value = ''; // Clear the values for new questions
-            });
-
-            // Append the new Fill in the Blanks question item
-            additionalFibQuestions.appendChild(newFibItem);
-        });
-
-        // Add a submit event listener to the form
-        fibForm.addEventListener('submit', function () {
-            // Convert correct answers to lowercase before form submission
-            document.querySelectorAll('input[name^="fib_correct_answer"]').forEach(function (element) {
-                element.value = element.value.toLowerCase();
-            });
-        });
-    });
-</script>        </div>      
-    </div>
-</div>
-    <script>
-//tab header
-function openPage(pageName,elmnt,color) {
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablink");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].style.backgroundColor = "";
-  }
-  document.getElementById(pageName).style.display = "block";
-  elmnt.style.backgroundColor = color;
-}
-
-// Get the element with id="defaultOpen" and click on it
-document.getElementById("defaultOpen").click();
-
-document.getElementById('show-mcq-form').addEventListener('click', function() {
-    document.querySelector('.mcq-form-container').style.display = 'block';
-});
-
-document.getElementById('show-tf-form').addEventListener('click', function() {
-    document.querySelector('.tf-form-container').style.display = 'block';
-});
-
-document.getElementById('show-FIB-form').addEventListener('click', function() {
-    document.querySelector('.FIB-form-container').style.display = 'block';
-});
 //ajax code for dropdown
     function setupTopicDropdown(formId) {
         $('#' + formId + ' #course').change(function () {
@@ -899,8 +533,8 @@ document.getElementById('show-FIB-form').addEventListener('click', function() {
 
     $(document).ready(function () {
         setupTopicDropdown('MCQ_Questions');
-        setupTopicDropdown('T_F_Question');
-        setupTopicDropdown('FIB_Question');
+        // setupTopicDropdown('T_F_Question');
+        // setupTopicDropdown('FIB_Question');
     });
     </script>
 </body>

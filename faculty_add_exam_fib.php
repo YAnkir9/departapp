@@ -336,3 +336,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </body>
 </html>
 
+=========================
+
+
+// Handle the form submission to add FIB questions
+if (isset($_POST['submit_FIB'])) {
+    if (isset($_POST['subject'])) {
+        $subjectId = $_POST['subject'];
+        $topicId = $_POST['topic'];
+        // Check if $_POST['test_question'] is set and is an array
+        if (isset($_POST['test_question']) && is_array($_POST['test_question'])) {
+            // Get the number of True/False questions submitted
+            $numQuestions = count($_POST['test_question']);
+
+            // Debugging: Check values of $subjectId and $topicId
+            echo "Subject ID (fib): " . $subjectId . "<br>";
+            echo "Topic ID (fib): " . $topicId . "<br>";
+
+            // Check if there are at least 2 options for each question (True and False)
+            if ($numQuestions < 1) {
+                echo "Please add at least one true/false question.";
+            } else {
+                // Assuming you have an established database connection ($conn)
+                $stmt = $conn->prepare("INSERT INTO test_content (tesy_question_type, test_question, 
+                test_correct_answer, test_que_weightage, test_sub_id, test_topic_id, create_time) VALUES (?, ?, ?, ?, ?, ?, NOW())");
+
+                $questionType = "Fill in the balnks"; // Fixed question type for True/False questions
+                for ($i = 0; $i < $numQuestions; $i++) {
+                    $question = $_POST['test_question'][$i];
+                    $correctAnswer = $_POST['fib_correct_answer'][$i];
+                    $weightage = $_POST['test_que_weightage'][$i];
+
+                    $stmt->bind_param("sssiii", $questionType, $question, $correctAnswer, $weightage, $subjectId, $topicId);
+                    $result = $stmt->execute();
+
+                    if (!$result) {
+                        echo "Error adding fib question: " . $conn->error;
+                        break; // Exit the loop if an error occurs
+                    }
+                }
+
+                $stmt->close();
+
+                if ($result) {
+                    echo "fib questions added successfully.";
+                }
+            }
+        } else {
+            echo "No fib questions submitted or data is not in the correct format.";
+        }
+    } else {
+        echo "Missing subject ID or True/False data.";
+    }
+}

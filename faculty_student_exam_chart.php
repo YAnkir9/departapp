@@ -33,23 +33,32 @@ while ($subject = $subjectsResult->fetch_assoc()) {
         FROM exam e
         JOIN subjects s ON e.Subject_id = s.Subject_id
         WHERE e.Subject_id = ?");
-    $examsStmt->bind_param("i",$subjectId);
+    $examsStmt->bind_param("i", $subjectId);
     $examsStmt->execute();  
     $examsResult = $examsStmt->get_result();
-    // var_dump($examsResult);
+
     // Loop through exams
     while ($exam = $examsResult->fetch_assoc()) {
         $examId = $exam['Exam_id'];
         $courseId = $exam['Course_id']; // Fetch Course_id from the exam table
     
         // Fetch users associated with the Course_id for the particular exam
-        $usersStmt = $conn->prepare("SELECT u.User_name, r.m_obtain, COUNT(mcq_id) AS total_questions
-            FROM users u
-            JOIN mcq_results r ON u.User_id = r.user_id
-            JOIN cources c ON u.Course_id = c.Course_id
-            WHERE r.Exam_id = ? AND c.Course_id = ?
-            GROUP BY u.User_id");
-        $usersStmt->bind_param("ii", $examId, $courseId); // Assuming $courseId is the specific Course_id you want to filter
+        $usersStmt = $conn->prepare("SELECT
+        u.User_name,
+        SUM(r.m_obtain) AS total_obtained_marks,
+        COUNT(mcq_id) AS total_questions,
+        e.total_marks AS exam_total_marks
+    FROM
+        users u
+    JOIN mcq_results r ON u.User_id = r.user_id
+    JOIN cources c ON u.Course_id = c.Course_id
+    JOIN exam e ON r.Exam_id = e.Exam_id
+    WHERE
+        r.Exam_id = ? AND c.Course_id = ?
+    GROUP BY
+        u.User_id, e.total_marks");
+    
+            $usersStmt->bind_param("ii", $examId, $courseId);
         $usersStmt->execute();
         $usersResult = $usersStmt->get_result();
 
@@ -59,7 +68,7 @@ while ($subject = $subjectsResult->fetch_assoc()) {
         // Loop through users
         while ($user = $usersResult->fetch_assoc()) {
             // Calculate average percentage for each student across multiple exams
-            $percentage = ($user['total_questions'] > 0) ? ($user['m_obtain'] / $user['total_questions']) * 100 : 0;
+            $percentage = ($user['total_questions'] > 0) ? ($user['total_obtained_marks'] / $user['exam_total_marks']) * 100 : 0;
 
             // Store data for plotting
             $chartData[$subject['Subject_name']][$exam['Exam_name']][] = array(

@@ -22,14 +22,14 @@ $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 $stmt->close();
 
-//course of the particular student 
+//course of the particular student
 $course = $user['Course_id'];
 
 // Fetch the course name from the courses table
 $substmt = $conn->prepare("SELECT * FROM cources WHERE Course_id = ?");
-// if (!$substmt) {
-//     die("Prepare failed: " . $conn->error); // Display error message if prepare() fails
-// }
+if (!$substmt) {
+    die("Prepare failed: " . $conn->error); // Display error message if prepare() fails
+}
 
 $substmt->bind_param("i", $course);
 $substmt->execute();
@@ -67,7 +67,9 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<link rel="stylesheet" href="indx.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="indx.css">
 <!-- <link rel="stylesheet" href="home.css"> -->
 
 <script src="close.js"></script>
@@ -172,63 +174,28 @@ $conn->close();
 <div class="container">
 <div class="row">
     <div class="col">
-    <h1>Assignments</h1>
+    <h1>Assignments</h1>  
+    <!-- <button onclick="document.location='D:/Tisha/try/Assignment.html'">Upload Assignement</button> -->
 
-<?php
 
+            <?php if ($assignmentResult->num_rows > 0): ?>
 
-// ... (previous code remains unchanged)
+                <?php while ($assignment = $assignmentResult->fetch_assoc()): ?>
+                    <div class="card1">
+                    <a href="<?php echo $assignment['ass_upload']; ?>" class="btn btn-primary"><?php echo $assignment['assignment_name']; ?></a>
+                    </div>
+                    <?php endwhile; ?>
+            <?php else: ?>
 
-// Iterate over each subject
-while ($subject = $subjectResult->fetch_assoc()) {
-    echo '<div class="subject-container">';
-    echo '<div class="subject-name">' . $subject['Subject_name'] . '</div>';
+               
 
-    // Fetch exams associated with the subject
-    $examStmt = $conn->prepare("SELECT * FROM exam WHERE Subject_id = ?");
-    if (!$examStmt) {
-        die("Prepare failed: " . $conn->error);
-    }
-    $examStmt->bind_param("i", $subject['Subject_id']);
-    $examStmt->execute();
-    $examResult = $examStmt->get_result();
+               
+                <p>No assignments available.</p>
+                </div>
+               
+                <?php endif; ?>
 
-    // Check if there are any exams for the subject
-    if ($examResult->num_rows > 0) {
-        echo '<ul class="exam-list">';
-
-        // Iterate over each exam
-        while ($exam = $examResult->fetch_assoc()) {
-            echo '<li class="exam-container">';
-            
-            // Check if the result exists for the exam
-            $resultExists = checkExamResultExists($exam['Exam_id'], $user['User_id']);
-
-            if ($resultExists) {
-                echo '<i class="fas fa-check-circle"></i> ';
-                echo '<a class="exam-name" href="student_submit_exam.php?exam_id=' . $exam['Exam_id'] . '">';
-            } else {
-                echo '<a class="exam-name" href="student_exam.php?exam_id=' . $exam['Exam_id'] . '">';
-            }
-            
-            echo $exam['Exam_name'] . '</a>';
-            echo '</li>';
-        }
-
-        echo '</ul>';
-    } else {
-        echo '<p>No exams available for this subject.</p>';
-    }
-
-    $examStmt->close();
-
-    echo '</div>'; // Closing the subject-container
-}
-
-$subjectStmt->close();
-?>
-
-                
+               
 
 
 </div>

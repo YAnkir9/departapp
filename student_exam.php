@@ -1,4 +1,7 @@
 <?php
+
+
+
 // Set error reporting and display errors
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -9,11 +12,14 @@ include 'nav.php';
 // Include the database connection file
 include 'config.php';
 
+
+
 // Check if the user is logged in
 if (!isset($_SESSION['User_id'])) {
     header("Location: login.php");
     exit();
 }
+
 
 // Initialize the answered MCQs array in the session if not already set
 if (!isset($_SESSION['answered_mcqs'])) {
@@ -54,7 +60,21 @@ if ($result) {
     }
 
     $exmId = $_GET['exam_id'];
-
+    $examStmt = $conn->prepare("SELECT tInterval FROM exam WHERE Exam_id = ?");
+    $examStmt->bind_param("i", $exmId);
+    $examStmt->execute();
+    $examResult = $examStmt->get_result();
+    
+    // Check if the query was successful
+    if ($examResult) {
+        $examData = $examResult->fetch_assoc();
+        $tInterval = $examData['tInterval'];
+    } else {
+        // Handle the case where the query fails
+            echo "hel";
+        // $tInterval = 10; // Set a default value if the query fails
+    }
+    
 // Check if MCQs are not already fetched
 if (!isset($_SESSION['mcqs'])) {
     // Fetch the MCQs associated with the exam in a randomized order
@@ -78,10 +98,10 @@ if (!isset($_SESSION['mcqs'])) {
 
     // Debugging: Output the fetched MCQs
     echo '<pre>';
+    // Debugging: Output the SQL query
     print_r($mcqs);
     echo '</pre>';
 
-    // Debugging: Output the SQL query
     // echo 'SQL Query: ' . $exmIdstmt->sqlstate . '<br>';
 
     // Debugging: Output the number of fetched MCQs
@@ -264,7 +284,7 @@ p {
                 foreach ($optionKeys as $optionKey) {
                     echo '<label class="block mb-2">';
                     echo '<input type="radio" name="user_answer' . $mcq['mcq_id'] . '" value="' . htmlspecialchars($optionKey) . '" class="mr-2">';
-                    echo '<span class="font-normal">' . htmlspecialchars($optionKey) . '. ' . htmlspecialchars($options[$optionKey]) . '</span>';
+                    echo '<span class="font-normal">' . htmlspecialchars($options[$optionKey]) . '</span>';
                     echo '</label>';
                 }
                 ?>
@@ -400,8 +420,8 @@ var obtainedWeightage = 0; // You need to calculate this based on the correct an
             window.location.href = 'student_submit_exam.php?exam_id=<?php echo $exmId; ?>';
         });
     }
+    var timer = <?php echo $tInterval; ?>; // Set the initial time in seconds
 
-    var timer = 10; // Set the initial time in seconds
     var countdown = document.getElementById('timer');
 
     // Function to update the countdown

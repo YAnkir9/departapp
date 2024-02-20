@@ -178,7 +178,7 @@
                                 echo '<div class="subject-name">' . $subject['Subject_name'] . '</div>';
 
                                 // Fetch exams associated with the subject
-                                $examStmt = $conn->prepare("SELECT * FROM exam WHERE Subject_id = ? Order by Create_time Desc" );
+                                $examStmt = $conn->prepare("SELECT * FROM exam WHERE Subject_id = ? and Available = 1 Order by Create_time Desc" );
                                 if (!$examStmt) {
                                     die("Prepare failed: " . $conn->error);
                                 }

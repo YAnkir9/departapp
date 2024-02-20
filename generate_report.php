@@ -12,7 +12,6 @@ try {
         if (isset($_GET['exam_id'])) {
             $examId = $_GET['exam_id'];
 
-            // Fetching exam details
             $stmt = $conn->prepare("SELECT Exam_name FROM exam WHERE Exam_id = ?");
             $stmt->bind_param("i", $examId);
             $stmt->execute();
@@ -32,28 +31,31 @@ try {
             $usersResult = $stmt->get_result();
 
             // Prepare the CSV data
-            $csvData .= '"Department Of Computer Science",,,,,,,,,'.PHP_EOL;
-            $csvData .= '"Rollwala Computer Centre",,,,,,,,,'.PHP_EOL;
-            $csvData .= '"Gujarat University",,,,,,,,,'.PHP_EOL.PHP_EOL;
-            $csvData .= '"' . $examName . '",,,,,,,,'.PHP_EOL.PHP_EOL;
+            $csvData = "Serial No.,Exam Name,User ID,User Name,First Name,Last Name,Total Marks,Obtained Marks,Percentage\n";
 
-            $csvData .= '"' . $courseName . '",,,,,"","",""'.PHP_EOL.PHP_EOL;
-            while($row = mysqli_fetch_assoc($result)) {
-                $csvData .= $row['user_id'] . ',' . $row['obtained_marks'] . PHP_EOL; 
-              }                
-    
+            $serialNumber = 1;
 
+            while ($user = $usersResult->fetch_assoc()) {
+                $userId = $user['User_id'];
+                $userName = $user['User_name'];
+                $firstName = $user['first_name'];
+                $lastName = $user['last_name'];
+                $totalMarks = $user['total_weightage']; // Get the total marks
+                $obtainedMarks = $user['obtained_weightage']; // Get the obtained marks
 
+                // Concatenate the row data into the CSV string
+                $csvData .= "{$serialNumber},{$examName},{$userId},{$userName},{$firstName},{$lastName},{$totalMarks},{$obtainedMarks},";
 
-            // Footer
-            $csvData .= "\nPlace : _________________\t\tName of Examiner : _____________________\n";
-            $csvData .= "Date : __________________\n";
-            $csvData .= "\t\t______________________________________\n";
-            $csvData .= "\t\t(Signature Of the Examiner)\n";
+                // Calculate the percentage only if the total marks is not zero
+                $percentage = ($totalMarks != 0) ? ($obtainedMarks / $totalMarks) * 100 : 0;
+                $csvData .= "{$percentage}\n";
+
+                $serialNumber++;
+            }
 
             // Set the CSV file headers for download
             header('Content-Type: text/csv');
-            header('Content-Disposition: attachment; filename="' . $examName . '_formatted_output.csv"');
+            header('Content-Disposition: attachment; filename="'.$examName.'.csv"');
 
             // Output the CSV data
             echo $csvData;

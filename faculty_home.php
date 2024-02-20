@@ -80,7 +80,7 @@ $user = $result->fetch_assoc();
             </div>
         </div>
     </ul>
-</aside>    <!-- Content Area on the Right Side -->
+     </aside>    <!-- Content Area on the Right Side -->
     <div id="content">
         <div class="main-top">
             <i class="fas fa-chalkboard-teacher"></i>

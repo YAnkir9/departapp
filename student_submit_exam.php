@@ -47,7 +47,7 @@ $exam = $examResult->fetch_assoc();
 
 $examStmt->close();
 
-$resultsStmt = $conn->prepare("SELECT m.question, m.correct_answer, m.m_weightage, r.user_answer, r.m_obtain
+$resultsStmt = $conn->prepare("SELECT m.question,m.option1,m.option2,m.option3,m.option4, m.correct_answer, m.m_weightage, r.user_answer, r.m_obtain
 FROM mcq_results AS r
 JOIN mcq AS m ON r.mcq_id = m.mcq_id
 WHERE r.user_id = ? AND r.Exam_id = ?");
@@ -57,6 +57,10 @@ $resultsResult = $resultsStmt->get_result();
 
 $results = array();
 while ($row = $resultsResult->fetch_assoc()) {
+    // Get the option values for user_answer and correct_answer from the database
+    $correctAnswerValue = $row[$optionColumns[$correctAnswerOption]];
+
+
     $row['m_obtain'] = ($row['user_answer'] == $row['correct_answer']) ? $row['m_weightage'] : 0;
     $results[] = $row;
 }
@@ -77,9 +81,9 @@ foreach ($results as $result) {
     }
 }
 
+// Calculate the percentage if $totalWeightage is not zero
+$percentage = ($totalWeightage != 0) ? ($obtainedWeightage / $totalWeightage) * 100 : 0;
 
-// Calculate the percentage
-$percentage = ($obtainedWeightage / $totalWeightage) * 100;
 
 ?>
 
@@ -91,137 +95,78 @@ $percentage = ($obtainedWeightage / $totalWeightage) * 100;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-/* Add your existing styles here */
-
-/* Header styles */
-header {
-    background-color: #333;
-    color: white;
-    padding: 10px;
-    text-align: center;
+ 
+    <link rel="stylesheet" href="indx.css">
+ <style>
+    /* Container styles */
+    .container {
+    max-width: 800px;
+    margin: 20px auto;
 }
 
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-}
-
-.logo img {
-    width: 40px;
-    margin-right: 10px;
-}
-
-.head {
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-/* Sidebar styles */
-#sidebar {
-    width: 250px;
-    height: 100%;
-    position: fixed;
-    left: -250px;
-    top: 0;
-    background-color: #222;
-    padding-top: 50px;
-    overflow-x: hidden;
-    transition: 0.5s;
-}
-
-.sidebar-nav {
-    padding: 20px;
-}
-
-.menu_items {
-    padding: 10px;
-}
-
-.logo_name {
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-.link {
-    color: #fff;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-}
-
-.link i {
-    margin-right: 10px;
-}
-
-/* Content area styles */
-#content {
-    margin-left: 250px;
-    padding: 20px;
-}
-
-.user-details {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.user-details-column {
-    width: 24%;
-}
-
-.icon-container {
-    text-align: right;
-}
-
-.icon-container a {
-    color: #007bff;
-}
-
-/* Exam result card styles */
 .card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
     margin-bottom: 20px;
 }
 
 .card-header {
     background-color: #007bff;
     color: #fff;
-    padding: 10px;
+    padding: 15px;
+    font-weight: bold;
 }
 
 .card-body {
     padding: 20px;
 }
 
+.details-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.details-card {
+    flex: 0 0 calc(50% - 10px);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.details-card h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
 .table {
     width: 100%;
+    border-collapse: collapse;
 }
 
-.table th, .table td {
-    text-align: center;
+.table th,
+.table td {
+    border: 1px solid #ddd;
+    padding: 12px;
 }
 
-/* Responsive styles */
-@media (max-width: 768px) {
-    #sidebar {
-        left: 0;
-    }
-
-    #content {
-        margin-left: 0;
-    }
+.table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-align: left;
 }
 
-    </style>
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+    background-color: #f0f0f0;
+}
+ </style>
 </head>
 <body>
     <header>
@@ -306,71 +251,71 @@ nav {
 </div>
 
 
-            <!-- Display the exam result -->
-            <div class="container">
-    
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4>MCQ Results</h4>
-                </div>
-                <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Student Details</h4>
-                </div>
-                <div class="card-body">
-                    <p><strong>Username:</strong> <?php echo $user['User_name']; ?></p>
-                    <p><strong>First Name:</strong> <?php echo $user['first_name']; ?></p>
-                    <p><strong>Last Name:</strong> <?php echo $user['last_name']; ?></p>
-                    <p><strong>Course :</strong> <?php echo $userCourse['Course_name']; ?></p>
-                </div>
+<div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h4>MCQ Results</h4>
             </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Exam Details</h4>
+            <div class="card-body">
+                <div class="details-container">
+                    <!-- Student details card -->
+                    <div class="details-card">
+                        <h4>Student Details</h4>
+                        <p><strong>Username:</strong> <?php echo $user['User_name']; ?></p>
+                        <p><strong>First Name:</strong> <?php echo $user['first_name']; ?></p>
+                        <p><strong>Last Name:</strong> <?php echo $user['last_name']; ?></p>
+                        <p><strong>Course:</strong> <?php echo $userCourse['Course_name']; ?></p>
+                    </div>
+                    <!-- Exam details card -->
+                    <div class="details-card">
+                        <h4>Exam Details</h4>
+                        <p><strong>Exam Name:</strong> <?php echo $exam['Exam_name']; ?></p>
+                        <p><strong>Total Marks:</strong> <?php echo $totalWeightage; ?></p>
+                        <p><strong>Marks Obtained:</strong> <?php echo $obtainedWeightage; ?></p>
+                        <p><strong>Percentage:</strong> <?php echo $percentage; ?>%</p>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p><strong>Exam Name:</strong> <?php echo $exam['Exam_name']; ?></p>
-                    <p><strong>Total Marks:</strong> <?php echo $totalWeightage; ?></p>
-                    <p><strong>Marks Obtained:</strong> <?php echo $obtainedWeightage; ?></p>
-                    <p><strong>Percentage:</strong> <?php echo $percentage; ?>%</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
+                <!-- Exam result table -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Question</th>
+                            <th>Selected Option</th>
+                            <th>Correct Option</th>
+                            <th>Obtained Marks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($results as $result): 
+            $userAnswerOption = $result['user_answer'];
+            $correctAnswerOption = $result['correct_answer'];
+            
+            // Map the option values to the corresponding database columns
+            $optionColumns = [
+                'A' => 'option1',
+                'B' => 'option2',
+                'C' => 'option3',
+                'D' => 'option4'
+            ];
+            
+            $userAnswerValue = $result[$optionColumns[$userAnswerOption]];
+            $correctAnswerValue = $result[$optionColumns[$correctAnswerOption]];
+            
+            $m_obtain = ($userAnswerOption == $correctAnswerOption) ? $result['m_weightage'] : 0;
+        
+                        ?>
                             <tr>
-                                <th>Question</th>
-                                <th>Selected Option</th>
-                                <th>Correct Option</th>
-                                <th>Obtained Marks</th>
+                                <td><?php echo $result['question']; ?></td>
+                                <td><?php echo $userAnswerValue; ?></td>
+                                <td><?php echo $correctAnswerValue; ?></td>
+                                <td><?php echo $result['m_obtain']; ?></td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($results as $result): ?>
-                                <tr>
-                                    <td><?php echo $result['question']; ?></td>
-                                    <td><?php echo $result['user_answer']; ?></td>
-                                    <td><?php echo $result['correct_answer']; ?></td>
-                                    <td><?php echo $result['m_obtain']; ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-</div>
         </section>
     </div>
     <script>

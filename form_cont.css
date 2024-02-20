@@ -1,0 +1,109 @@
+/* Container for MCQ section and True/False section */
+.mcq-form-container, .tf-form-container ,.FIB-form-container{
+    display: none;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Form field styles for both MCQ and True/False sections */
+.form-label,
+.form-control,
+.form-select {
+    font-size: 1rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #444;
+}
+
+.form-select,
+.form-input,
+.form-control,
+.form-textarea {
+    width: 80%;
+    padding: 5px;
+    margin: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Button styles for both MCQ and True/False sections */
+.btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: #fff;
+}
+
+/* MCQ and True/False item styles */
+.mcq-item,
+.tf-item ,.FIB-item{
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .form-select,
+    .form-input,
+    .form-textarea {
+        font-size: 14px;
+    }
+
+    .btn {
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .form-select,
+    .form-input,
+    .form-textarea {
+        font-size: 12px;
+    }
+
+    .btn {
+        padding: 6px 12px;
+    }
+}
+
+/* Style for the "Add More Question" button */
+#add-more-mcq,
+#add-more-tf,#add-more-FIB {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* Style for the additional MCQ and True/False questions */
+.additional-mcq-questions,
+.additional-tf-questions {
+    margin-top: 20px;
+}

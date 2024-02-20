@@ -1,6 +1,9 @@
 <?php
+// Set error reporting and display errors
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
+// Include the database connection file
 include 'config.php';
 
 require 'vendor/autoload.php'; // Include PhpSpreadsheet autoloader
@@ -19,7 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $numQuestions = count($_POST['question']);
             if ($numQuestions < 1) {
-                echo "Please add at least one MCQ question.";
+                $errorMessage = "Please add at least one MCQ question.";
+                echo '<script type="text/javascript">window.alert("' . $errorMessage . '"); window.location.href = "faculty_add_question.php";</script>';
             } else {
                 $stmt = $conn->prepare("INSERT INTO mcq (question, option1, option2, option3, option4, 
                         m_weightage, correct_answer, subject_id, topic_id, create_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
@@ -38,7 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $result = $stmt->execute();
 
                     if (!$result) {
-                        echo "Error adding MCQ: " . $conn->error;
+                        $errorMessage = "Error adding MCQ: " . $conn->error;
+                        echo '<script type="text/javascript">window.alert("' . $errorMessage . '"); window.location.href = "faculty_add_question.php";</script>';
                         break; // Exit the loop if an error occurs
                     }
                 }
@@ -46,11 +51,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->close();
 
                 if ($result) {
-                    echo "MCQs added successfully.";
+                    echo '<script type="text/javascript">window.alert("MCQs added successfully."); window.location.href = "faculty_add_question.php";</script>';
                 }
             }
         } else {
-            echo "Missing subject ID or MCQ data.";
+            $errorMessage = "Missing subject ID or MCQ data.";
+            echo '<script type="text/javascript">window.alert("' . $errorMessage . '"); window.location.href = "faculty_add_question.php";</script>';
         }
     } 
     if (isset($_POST['submit_mcq_excel'])) {
@@ -62,11 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Debugging: Check values of $subjectId and $topicId
             echo "Subject ID (MCQ): " . $subjectId . "<br>";
             echo "Topic ID (MCQ): " . $topicId . "<br>";
-            print_r($_FILES['mcqFile']);
+
             // Import data from Excel file
             if (isset($_FILES['mcqFile']) && $_FILES['mcqFile']['error'] == 0) {
-                
-                
                 $excelFile = $_FILES['mcqFile']['tmp_name'];
 
                 $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($excelFile);
@@ -83,14 +87,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $option3 = $worksheet->getCell('D' . $row)->getValue();
                     $option4 = $worksheet->getCell('E' . $row)->getValue();
                     $mWeightage = $worksheet->getCell('F' . $row)->getValue();
-                    $correctAnswer = $worksheet->getCell('G' . $row)->getValue();
+                    $correctAnswer = strtoupper($worksheet->getCell('G' . $row)->getValue()); // Convert to uppercase for case-insensitive check
 
+                    // Additional checks for empty values
+                    if (empty($question) || empty($option1) || empty($option2) || empty($option3) || empty($option4) || empty($mWeightage) || empty($correctAnswer)) {
+                        $errorMessage = "Error: Data in row $row cannot be empty.";
+                        echo '<script type="text/javascript">window.alert("' . $errorMessage . '"); window.location.href = "faculty_add_question.php";</script>';
+                        break; // Exit the loop if an error occurs
+                    }
+
+                    // Additional checks for data types
+                    if (!is_numeric($mWeightage)) {
+                        $errorMessage = "Error: Weightage in row $row must be a numeric value.";
+                        echo '<script type="text/javascript">window.alert("' . $errorMessage . '"); window.location.href = "faculty_add_question.php";</script>';
+                        break; // Exit the loop if an error occurs
+                    }
+
+                    // Additional checks for correct answer
+                    if (!in_array($correctAnswer, ["A", "B", "C", "D"])) {
+                        $errorMessage = "Error: Invalid correct answer in row $row. It must be one of 'A', 'B', 'C', or 'D'.";
+                        echo '<script type="text/javascript">window.alert("' . $errorMessage . '"); window.location.href = "faculty_add_question.php";</script>';
+                        break; // Exit the loop if an error occurs
+                    }
+
+                    // Continue with the binding and execution
                     $stmt->bind_param("sssssisii", $question, $option1, $option2, $option3, $option4, 
-                            $mWeightage, $correctAnswer, $subjectId, $topicId);
+                        $mWeightage, $correctAnswer, $subjectId, $topicId);
                     $result = $stmt->execute();
 
                     if (!$result) {
-                        echo "Error adding MCQ from Excel: " . $conn->error;
+                        $errorMessage = "Error adding MCQ from Excel: " . $conn->error;
+                        echo '<script type="text/javascript">window.alert("' . $errorMessage . '"); window.location.href = "faculty_add_question.php";</script>';
                         break; // Exit the loop if an error occurs
                     }
                 }
@@ -98,16 +125,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->close();
 
                 if ($result) {
-                    echo "MCQs added successfully from Excel file.";
+                    echo '<script type="text/javascript">window.alert("MCQs added successfully from Excel file."); window.location.href = "faculty_add_question.php";</script>';
                 }
             } else {
-                echo "Error uploading Excel file: " . ($_FILES['mcqFile']['error'] ?? 'Unknown error');
+                $errorMessage = "Error uploading Excel file: " . ($_FILES['mcqFile']['error'] ?? 'Unknown error');
+                echo '<script type="text/javascript">window.alert("' . $errorMessage . '"); window.location.href = "faculty_add_question.php";</script>';
             }
         } else {
-            echo "Missing subject ID or MCQ data.";
+            $errorMessage = "Missing subject ID or MCQ data.";
+            echo '<script type="text/javascript">window.alert("' . $errorMessage . '"); window.location.href = "faculty_add_question.php";</script>';
         }
     }
-    header("Location: faculty_add_question.php");
-    exit();
+    exit(); // No need for header("Location") here
 }
 ?>
