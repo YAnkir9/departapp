@@ -1,0 +1,16 @@
+{
+    "functions": {
+      "./*.php": {
+        "runtime": "vercel-php@0.9"
+      }
+    },
+    "routes": [
+      { "handle": "filesystem" },
+      {
+        "src": "/(.*)",
+        "dest": "/$1",
+        "headers": { "Cache-Control": "s-maxage=1, stale-while-revalidate" }
+      }
+    ]
+  }
+  
