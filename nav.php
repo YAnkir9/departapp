@@ -38,17 +38,7 @@ if ($role === 'admin') {
       'label' => 'Dashboard'
     ),
     array(
-      'href' => '#',
-      'icon' => 'fas fa-clipboard',
-      'label' => 'Assignment'
-    ),
-    array(
-      'href' => '#',
-      'icon' => 'fas fa-file-alt',
-      'label' => 'Exam'
-    ),
-    array(
-      'href' => '#',
+      'href' => 'aproved_users.php',
       'icon' => 'fas fa-user',
       'label' => 'Users'
     ),
@@ -57,11 +47,7 @@ if ($role === 'admin') {
       'icon' => 'fas fa-info-circle',
       'label' => 'About'
     ),
-    array(
-      'href' => '#',
-      'icon' => 'fas fa-comment',
-      'label' => 'Remarks'
-    ),
+
     array(
       'href' => 'login.php',
       'icon' => 'fas fa-sign-out-alt',
@@ -73,29 +59,15 @@ if ($role === 'admin') {
 
 
     array(
-      'href' => 'student_home.php',
+      'href' => 'student_exam.php',
       'icon' => 'fas fa-menorah',
       'label' => 'Dashboard'
     ),
+
     array(
-        'href' => '#',
-        'icon' => 'fas fa-clipboard',
-        'label' => 'Assignment'
-    ),
-    array(
-        'href' => '#',
-        'icon' => 'fas fa-file-alt',
-        'label' => 'Exam'
-    ),
-    array(
-        'href' => '#',
-          'icon' => 'fas fa-info-circle',
-        'label' => 'About'
-    ),
-    array(
-        'href' => '#',
+        'href' => 'student_exam_list.php',
         'icon' => 'fas fa-comment',
-        'label' => 'Remarks'
+        'label' => 'fas fa-graduation-cap'
     ),
     array(
         'href' => 'login.php',
@@ -108,19 +80,24 @@ if ($role === 'admin') {
 
     array(
 
-      'href' => 'faculty_home.php',
+      'href' => 'faculty_exam.php',
       'icon' => 'fas fa-menorah',
       'label' => 'Dashboard'
     ),
     array(
-      'href' => '#',
-      'icon' => 'fas fa-clipboard',
-      'label' => 'Assignment'
+      'href' => 'facultyExamList.php',
+      'icon' => 'fas fa-file-alt',
+      'label' => 'Exam list'
     ),
     array(
-      'href' => '#',
+      'href' => 'faculty_create_exam.php',
       'icon' => 'fas fa-file-alt',
-      'label' => 'Exam'
+      'label' => 'Create Exam'
+    ),
+    array(
+      'href' => 'faculty_add_question.php',
+      'icon' => 'fas fa-file-alt',
+      'label' => 'Add Questions'
     ),
     array(
       'href' => '#',

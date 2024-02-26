@@ -206,56 +206,88 @@ if ($_SESSION['credential'] == 'faculty' && $_SESSION['is_approved'] == 1) {
         <div id="MCQs" class="tabcontent">
         <h2 class="mb-4">Add MCQs</h2>
         <form id="MCQ_Questions" action="import_mcq.php" method="POST" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="course" class="form-label">Course:</label>
-            <select name="course" id="course" required class="form-select">
-                <option value="">Select Course</option>
-                <?php foreach ($courses as $course): ?>
-                <?php
-                // Check if the session variable for selected course is set
-                $selectedCourseId = isset($_SESSION['selected_course']) ? $_SESSION['selected_course'] : "";
-                ?>
-                <option value="<?php echo $course['Course_id']; ?>" <?php echo ($selectedCourseId == $course['Course_id']) ? 'selected' : ''; ?>><?php echo $course['Course_name']; ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+            <div class="mb-3">
+                <label for="course" class="form-label">Course:</label>
+                <select name="course" id="course" required class="form-select">
+                    <option value="">Select Course</option>
+                    <?php foreach ($courses as $course): ?>
+                    <?php
+                    // Check if the session variable for selected course is set
+                        $selectedCourseId = isset($_SESSION['selected_course']) ? $_SESSION['selected_course'] : "";
+                    ?>
+                    <option value="<?php echo $course['Course_id']; ?>" <?php echo ($selectedCourseId == $course['Course_id']) ? 'selected' : ''; ?>><?php echo $course['Course_name']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
-        <div class="mb-3">
-            <label for="subject" class="form-label">Subject:</label>
-            <select name="subject" id="subject" required class="form-select">
-                <option value="">Select Subject</option>
-                <?php
-                // Check if the session variable for selected subject is set
-                $selectedSubjectId = isset($_SESSION['selected_subject']) ? $_SESSION['selected_subject'] : "";
-                $selectedSubjectName = isset($_SESSION['selected_subject_name']) ? $_SESSION['selected_subject_name'] : "";
-                ?>
-                <option value="<?php echo $selectedSubjectId; ?>" selected><?php echo $selectedSubjectName; ?></option>
-            </select>
-        </div>
+            <div class="mb-3">
+                <label for="subject" class="form-label">Subject:</label>
+                <select name="subject" id="subject" required class="form-select">
+                    <option value="">Select Subject</option>
+                    <?php
+                        // Check if the session variable for selected subject is set
+                        $selectedSubjectId = isset($_SESSION['selected_subject']) ? $_SESSION['selected_subject'] : "";
+                        $selectedSubjectName = isset($_SESSION['selected_subject_name']) ? $_SESSION['selected_subject_name'] : "";
+                    ?>
+                    <option value="<?php echo $selectedSubjectId; ?>" selected><?php echo $selectedSubjectName; ?></option>
+                </select>
+            </div>
 
-        <div class="mb-3">
-            <label for="topic" class="form-label">Topic:</label>
-            <select name="topic" id="topic" required class="form-select">
-                <option value="">Select Topic</option>
-                <?php
-                // Check if the session variable for selected topic is set
-                $selectedTopicId = isset($_SESSION['selected_topic']) ? $_SESSION['selected_topic'] : "";
-                $selectedTopicName = isset($_SESSION['selected_topic_name']) ? $_SESSION['selected_topic_name'] : "";
-                ?>
-                <!-- Populate the topics dynamically based on your data -->
-                <?php foreach ($topics as $topic): ?>
-                <option value="<?php echo $topic['topic_id']; ?>" <?php echo ($selectedTopicId == $topic['topic_id']) ? 'selected' : ''; ?>><?php echo $topic['topic_name']; ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+            <div class="mb-3">
+                <label for="topic" class="form-label">Topic:</label>
+                <select name="topic" id="topic" required class="form-select">
+                    <option value="">Select Topic</option>
+                    <?php
+                    // Check if the session variable for selected topic is set
+                        $selectedTopicId = isset($_SESSION['selected_topic']) ? $_SESSION['selected_topic'] : "";
+                        $selectedTopicName = isset($_SESSION['selected_topic_name']) ? $_SESSION['selected_topic_name'] : "";
+                    ?>
+                    <!-- Populate the topics dynamically based on your data -->
+                    <?php foreach ($topics as $topic): ?>
+                    <option value="<?php echo $topic['topic_id']; ?>" <?php echo ($selectedTopicId == $topic['topic_id']) ? 'selected' : ''; ?>><?php echo $topic['topic_name']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div id="hidden-form" style="display: none;">
+                <input type="text" name="new_topic" id="add_topics">
+                <button type="submit" name="submit_topic">Submit</button>
+            </div>
+            <style>
 
-        <style>
-#upload-mcq-form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+#hidden-form-content {
+    background-color: #fefefe;
+    margin: 15% auto;
     padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+#hidden-form input[type="text"], #hidden-form button {
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 48%;
+    box-sizing: border-box;
+}
+
+#hidden-form button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#hidden-form button:hover {
+    background-color: #45a049;
+}
+
+
+#upload-mcq-form-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+        padding: 20px;
     border: 2px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -370,6 +402,22 @@ if (myElement !== null) {
     </form>
     <script>
         $(document).ready(function () {
+
+            
+// Add an event listener to the topics dropdown
+$('#topic').change(function () {
+    var selectedTopic = $(this).val();
+    console.log("Selected topic:", selectedTopic); // Check the value of selectedTopic
+    if (selectedTopic === 'other') {
+        // Show the hidden form and its content
+        $('#hidden-form').show();
+        $('#hidden-form div').show();
+    } else {
+        // Hide the hidden form and its content
+        $('#hidden-form').hide();
+        $('#hidden-form div').hide();
+    }
+});
     // Hide the MCQ form initially
     $('.mcq-form-container').hide();
 
@@ -378,7 +426,8 @@ if (myElement !== null) {
         $('.mcq-form-container').toggle();
     });
 });
-        // JavaScript code to handle adding more MCQ questions
+
+// JavaScript code to handle adding more MCQ questions
         document.addEventListener('DOMContentLoaded', function () {
             const mcqContainer = document.getElementById('mcq-container');
             const addMoreMcqButton = document.getElementById('add-more-mcq');
@@ -520,15 +569,21 @@ if (myElement !== null) {
             topicSelect.empty();
             topicSelect.append('<option value="">Select Topic</option>');
             topics.forEach(function (topic) {
+            
                 topicSelect.append('<option value="' + topic.topic_id + '">' + topic.topic_name + '</option>');
             });
+    
+             // Add "Other" option at the end
+            topicSelect.append('<option value="other">Add New Topic</option>');
         }
+
 
         function clearTopics(formId) {
             var topicSelect = $('select[name="topic"]', '#' + formId);
             topicSelect.empty();
             topicSelect.append('<option value="">Select Topic</option>');
         }
+
     }
 
     $(document).ready(function () {

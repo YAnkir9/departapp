@@ -235,7 +235,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <input type="checkbox" name="selected_mcqs[]" value="<?php echo $mcq['mcq_id']; ?>" <?php echo (in_array($mcq['mcq_id'], $selectedMCQs) ? 'checked' : ''); ?>>
                                     </div>
                                     <div class="mcq-content">
-                                        <p><strong><?php echo $mcq['mcq_id']; ?></strong> <?php echo $mcq['question']; ?></p>
+                                        <p> <?php echo $mcq['question']; ?></p>
                                         <ol type="A">
                                             <li><?php echo $mcq['option1']; ?></li>
                                             <li><?php echo $mcq['option2']; ?></li>

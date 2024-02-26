@@ -185,7 +185,14 @@ $user = $result->fetch_assoc();
                 </div>
             </div>
         </div>
-
+        <div class="col-md-12">
+            <div class="card custom-card">
+                <div class="card-body text-center">
+                    <a href="faculty_view.php" class="card-link">Questions List</a>
+                </div>
+            </div>
+        </div>
+    
         <div class="col-md-12">
             <div class="card custom-card">
                 <div class="card-body text-center">

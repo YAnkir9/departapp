@@ -10,6 +10,32 @@ require 'vendor/autoload.php'; // Include PhpSpreadsheet autoloader
 
 // Handle the form submission to add MCQs
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['submit_topic'])) {
+        // Handle manual addition of MCQs
+        if (isset($_POST['subject']) && isset($_POST['new_topic'])) {
+            $subjectId = $_POST['subject'];
+            $NewTopic = $_POST['new_topic'];
+    
+            // Debugging: Check values of $subjectId and $topicId
+            echo "Subject ID (MCQ): " . $subjectId . "<br>";
+    
+            $stmt = $conn->prepare("INSERT INTO topics (topic_name, subject_id) VALUES (?, ?)");
+            $stmt->bind_param("si", $NewTopic, $subjectId);
+            $result = $stmt->execute();
+    
+            $stmt->close();
+    
+            if ($result) {
+                echo '<script type="text/javascript">window.alert("Topic added successfully."); window.location.href = "faculty_add_question.php";</script>';
+            } else {
+                echo '<script type="text/javascript">window.alert("Failed to add topic."); window.location.href = "faculty_add_question.php";</script>';
+            }
+        } else {
+            $errorMessage = "Missing subject ID or topic name";
+            echo '<script type="text/javascript">window.alert("' . $errorMessage . '"); window.location.href = "faculty_add_question.php";</script>';
+        }
+    }
+    
     if (isset($_POST['submit_mcq_manual'])) {
         // Handle manual addition of MCQs
         if (isset($_POST['subject']) && isset($_POST['topic'])) {

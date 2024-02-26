@@ -1,8 +1,8 @@
 <?php 
-$serverName = "ftpupload.net";
-$userName = "if0_35594114";
-$password = "RpfIgQE9sj2A";
-$dbname = "if0_35594114_spasproject";
+$serverName = "";
+$userName = "root";
+$password = "";
+$dbname = "project";
 
 $conn = new mysqli($serverName,$userName,$password,$dbname);
 if($conn->connect_error){

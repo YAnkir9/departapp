@@ -190,7 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="exam-container">
                 <?php
                 // Fetch exam data from the database
-                $sql = "SELECT Exam_id, Exam_name, total_marks, Available FROM exam";
+                $sql = "SELECT Exam_id, Exam_name, total_marks, Available,Create_time FROM exam ORDER by Create_time DESC";
                 $result = $conn->query($sql);
 
                 // Check if there are results

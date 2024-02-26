@@ -36,10 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: admin_home.php');
             exit();
         } elseif ($_SESSION['credential'] == 'student' && $is_approved == 1) {
-            header("Location: student_home.php");
+            header("Location: student_exam.php");
             exit();
         } elseif ($_SESSION['credential'] == 'faculty' && $is_approved == 1) {
-            header("Location: faculty_home.php");
+            header("Location: faculty_exam.php");
             exit();
         } else {
             $error = "Your registration is under process. Please try logging in after we inform you.";
